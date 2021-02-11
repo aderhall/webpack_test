@@ -4,15 +4,22 @@
   "description": "A project for me to play around with using webpack",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack serve --mode development --env development --useLocalIp --host 0.0.0.0"
   },
   "author": "Adrian Hall",
   "license": "ISC",
   "devDependencies": {
-    "babel-core": "^6.26.3",
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
     "babel-loader": "^8.2.2",
-    "babel-preset-env": "^1.7.0",
+    "css-loader": "^5.0.2",
+    "html-webpack-plugin": "^5.0.0",
+    "style-loader": "^2.0.0",
     "webpack": "^5.21.2",
+    "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2"
-  }
+  },
+  "dependencies": {}
 }
