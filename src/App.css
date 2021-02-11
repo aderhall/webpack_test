@@ -32,25 +32,36 @@ main {
 }
 
 .Post {
-    margin: 10px;
-    padding: 0 20px;
+    margin: 10px 3px;
+    padding: 20px;
     border-radius: 5px;
     border: 1px solid #777;
 }
 
-.Post__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
 .Post__title {
-    font-style: bold;
+    display: block;
+    font-weight: bold;
     font-size: 1.2em;
+    text-transform: capitalize;
+    margin-bottom: 0.4em;
 }
 
-.Post__username {
-    margin-left: 1em;
+.UserIcon {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 20px;
+    margin: 0 0 10px;
+}
+
+.UserIcon__image {
+    width: 20px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.UserIcon__username {
+    font-size: 0.85em;
 }
 
 .Feed {

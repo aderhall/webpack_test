@@ -1,6 +1,25 @@
 import "./App.css";
 import { Reactive, useEffect, useState, apply } from "./reactive/reactive";
 
+function shuffleArray(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex, newArray = [...array];
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = newArray[currentIndex];
+      newArray[currentIndex] = newArray[randomIndex];
+      newArray[randomIndex] = temporaryValue;
+    }
+  
+    return newArray;
+}
+
 function getData(url, callback) {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
@@ -20,40 +39,61 @@ function AppBar(props) {
     )
 }
 
-function Post(props) {
-    const title = apply(info => info.title, [props.info]);
-    const body = apply(info => info.body, [props.info]);
-    const [username, setUsername] = useState("loading...");
-    
-    useEffect((info) => {
-        getData("https://jsonplaceholder.typicode.com/users/" + info.userId.toString(), xhr => {
+function UserIcon(props) {
+    const [username, setUsername] = useState(null);
+    const [imgUrl, setImgUrl] = useState(null);
+    useEffect((userId) => {
+        getData("https://jsonplaceholder.typicode.com/users/" + userId.toString(), xhr => {
             if (xhr.status === 200) {
                 setUsername(JSON.parse(xhr.response).username)
             } else {
                 setUsername("[USER NOT FOUND]");
             }
+        });
+        getData("https://jsonplaceholder.typicode.com/photos/" + userId.toString(), xhr => {
+            if (xhr.status === 200) {
+                setImgUrl(JSON.parse(xhr.response).thumbnailUrl);
+            }
         })
-    }, [props.info])
+    }, [props.userId]);
+    
+    return Reactive.createElement(
+        "div",
+        { className: "UserIcon" },
+        Reactive.createElement(
+            "img",
+            {
+                className: "UserIcon__image",
+                src: apply(imgUrl => imgUrl ? imgUrl : "", [imgUrl])
+            }
+        ),
+        Reactive.createElement(
+            "span",
+            { className: "UserIcon__username" },
+            username
+        )
+    )
+}
+
+function Post(props) {
+    const title = apply(info => info.title, [props.info]);
+    const body = apply(info => info.body, [props.info]);
+    
     
     return Reactive.createElement(
         "div",
         { className: "Post" },
         Reactive.createElement(
-            "div",
-            { className: "Post__header" },
-            Reactive.createElement(
-                "p",
-                { className: "Post__title" },
-                title
-            ),
-            Reactive.createElement(
-                "p",
-                { className: "Post__username" },
-                username
-            )
+            UserIcon,
+            { userId: apply(info => info.userId, [props.info]) }
         ),
         Reactive.createElement(
-            "p",
+            "span",
+            { className: "Post__title" },
+            title
+        ),
+        Reactive.createElement(
+            "span",
             { className: "Post__body" },
             body
         )
@@ -84,7 +124,7 @@ function Feed(props) {
                 if (gotData === true) {
                     return apply((posts) => {
                         //return JSON.stringify(posts);
-                        return posts.map(item => {
+                        return shuffleArray(posts).map(item => {
                             return Reactive.createElement(
                                 Post,
                                 { info: item }
