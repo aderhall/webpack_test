@@ -26,13 +26,26 @@
     justify-content: left;
     align-items: center;
 }
+.AppBar>:not(:last-child) {
+    margin-right: 2em;
+}
+
+.AppBar__title {
+    font-size: 1em;
+    font-weight: normal;
+}
+
+.AppBar__link {
+    text-decoration: underline;
+    color: inherit;
+}
 
 main {
     margin-top: var(--header-height);
 }
 
 .Post {
-    margin: 10px 3px;
+    margin: 10px 0;
     padding: 20px;
     border-radius: 5px;
     border: 1px solid #777;
@@ -66,4 +79,60 @@ main {
 
 .Feed {
     padding: 20px;
+}
+
+.Profile {
+    padding: 20px;
+    display: inline-block;
+}
+
+.Profile__container {
+    text-align: center;
+}
+
+.Profile__head {
+    display: flex;
+    font-size: 20px;
+    height: 150px;
+    text-align: left;
+}
+
+.Profile__image {
+    border-radius: 50%;
+    width: 150px;
+    margin-right: 20px;
+}
+
+.Profile__names {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.Profile__name {
+    font-weight: bold;
+    margin-bottom: 0.2em;
+}
+
+.Profile__username {
+    font-style: italic;
+    color: #555;
+}
+
+.Profile__info {
+    display: inline-block;
+    margin: 30px 0;
+    text-align: left;
+}
+.Profile__info>dt {
+    /* inline-block so that we can use margins */
+    display: inline-block;
+    margin: 0.4em;
+}
+.Profile__info>dd {
+    display: inline;
+}
+.Profile__info>dd::after {
+    content: "";
+    display: block;
 }
