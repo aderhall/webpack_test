@@ -3,14 +3,17 @@
 }
 
 .App {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
+    
+    background: linear-gradient(-30deg, #eafff6 0%, #f9d5fd 100%);
 }
 
 .AppBar {
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 2;
     
     margin: 0;
     
@@ -19,8 +22,14 @@
     height: var(--header-height);
     padding: 20px;
     
-    background-color: rgb(13, 145, 197);
-    color: white;
+    /*background-color: rgb(13, 145, 197);
+    color: white;*/
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 16px 0px rgba( 31, 38, 135, 0.37 );
+    border-bottom: 1px solid rgba( 255, 255, 255, 0.18 );
+    
+    /*backdrop-filter: blur( 6.5px );
+    -webkit-backdrop-filter: blur( 6.5px );*/
     
     display: flex;
     justify-content: left;
@@ -42,58 +51,60 @@
 
 main {
     margin-top: var(--header-height);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    overflow-y: scroll;
 }
 
-.Post {
-    margin: 10px 0;
-    padding: 20px;
-    border-radius: 5px;
-    border: 1px solid #777;
-}
 
-.Post__title {
-    display: block;
-    font-weight: bold;
-    font-size: 1.2em;
-    text-transform: capitalize;
-    margin-bottom: 0.4em;
-}
-
-.UserIcon {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    height: 20px;
-    margin: 0 0 10px;
-}
-
-.UserIcon__image {
-    width: 20px;
-    margin-right: 10px;
-    border-radius: 50%;
-}
-
-.UserIcon__username {
-    font-size: 0.85em;
-}
 
 .Feed {
     padding: 20px;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.NetworkMessage {
+    display: inline-block;
+    
+    margin: 1em 0;
+    
+    padding: 20px;
+    
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 16px 0px rgba( 31, 38, 135, 0.37 );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
 
 .Profile {
-    padding: 20px;
     display: inline-block;
+    
+    margin: 1em 0 0;
+    
+    max-width: 100%;
+    box-sizing: border-box;
+    
+    padding: 20px;
+    
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 16px 0px rgba( 31, 38, 135, 0.37 );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
 
 .Profile__container {
+    padding: 20px;
     text-align: center;
 }
 
 .Profile__head {
     display: flex;
     font-size: 20px;
-    height: 150px;
     text-align: left;
 }
 
@@ -121,7 +132,7 @@ main {
 
 .Profile__info {
     display: inline-block;
-    margin: 30px 0;
+    margin: 1em 0 0;
     text-align: left;
 }
 .Profile__info>dt {
@@ -135,4 +146,21 @@ main {
 .Profile__info>dd::after {
     content: "";
     display: block;
+}
+
+@media only screen and (max-width: 425px) {
+    .Profile__head {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .Profile__image {
+        margin: 0;
+    }
+    .Profile__names {
+        margin-top: 1em;
+    }
+    .Profile__info>dt {
+        display: block;
+    }
 }

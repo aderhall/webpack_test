@@ -1,37 +1,9 @@
 import "./App.css";
 import { Reactive, useEffect, useState, apply, set, deref } from "./reactive/reactive";
+import Post from "./Post";
+import { shuffleArray, getData, staticStore } from "./utils"
 
-function shuffleArray(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex, newArray = [...array];
-  
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-  
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-  
-      // And swap it with the current element.
-      temporaryValue = newArray[currentIndex];
-      newArray[currentIndex] = newArray[randomIndex];
-      newArray[randomIndex] = temporaryValue;
-    }
-  
-    return newArray;
-}
 
-function getData(url, callback) {
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.onload = () => callback(xhr);
-    xhr.send();
-}
-
-const staticStore = {
-    setPage: () => {},
-    setRoute: () => {},
-    myId: 3
-}
 
 function AppBar(props) {
     return Reactive.createElement(
@@ -57,68 +29,11 @@ function AppBar(props) {
     )
 }
 
-function UserIcon(props) {
-    const [username, setUsername] = useState(null);
-    const [imgUrl, setImgUrl] = useState(null);
-    useEffect((userId) => {
-        getData("https://jsonplaceholder.typicode.com/users/" + userId.toString(), xhr => {
-            if (xhr.status === 200) {
-                setUsername(JSON.parse(xhr.response).username)
-            } else {
-                setUsername("[USER NOT FOUND]");
-            }
-        });
-        getData("https://jsonplaceholder.typicode.com/photos/" + userId.toString(), xhr => {
-            if (xhr.status === 200) {
-                setImgUrl(JSON.parse(xhr.response).thumbnailUrl);
-            }
-        })
-    }, [props.userId]);
-    
+function NetworkMessage(props) {
     return Reactive.createElement(
-        "div",
-        { className: "UserIcon" },
-        Reactive.createElement(
-            "img",
-            {
-                className: "UserIcon__image",
-                src: apply(imgUrl => imgUrl ? imgUrl : "", [imgUrl])
-            }
-        ),
-        Reactive.createElement(
-            "a",
-            {
-                className: "UserIcon__username",
-                href: "#",
-                onClick: () => (staticStore.setRoute(deref(props.userId)), staticStore.setPage("profile"), console.log(props.userId))
-            },
-            apply(username => "@" + username, [username])
-        )
-    )
-}
-
-function Post(props) {
-    const title = apply(info => info.title, [props.info]);
-    const body = apply(info => info.body, [props.info]);
-    
-    
-    return Reactive.createElement(
-        "div",
-        { className: "Post" },
-        Reactive.createElement(
-            UserIcon,
-            { userId: apply(info => info.userId, [props.info]) }
-        ),
-        Reactive.createElement(
-            "span",
-            { className: "Post__title" },
-            title
-        ),
-        Reactive.createElement(
-            "span",
-            { className: "Post__body" },
-            body
-        )
+        "p",
+        { className: "NetworkMessage" },
+        props.children
     );
 }
 
@@ -131,7 +46,7 @@ function Feed(props) {
                 setPosts(JSON.parse(xhr.response));
                 setGotData(true);
             } else {
-                setGotData(false);
+                setGotData(xhr.status);
             }
         });
     }, [props.url]);
@@ -153,17 +68,17 @@ function Feed(props) {
                             )
                         });
                     }, [posts]);
-                } else if (gotData === false) {
+                } else if (gotData === null) {
                     return Reactive.createElement(
-                        "p",
-                        { className: "Feed__network-message" },
-                        "Error: could not get posts from server"
+                        NetworkMessage,
+                        null,
+                        "Getting posts..."
                     );
                 } else {
                     return Reactive.createElement(
-                        "p",
-                        { className: "Feed__network-message" },
-                        "Getting posts..."
+                        NetworkMessage,
+                        null,
+                        `Could not get posts: server responded with ${gotData}`
                     );
                 }
             }, [gotData])
@@ -196,14 +111,14 @@ function Profile(props) {
         apply(userInfo => {
             if (userInfo === null) {
                 return Reactive.createElement(
-                    "span",
-                    { className: "Profile__network-message" },
+                    NetworkMessage,
+                    null,
                     "Getting profile info..."
                 );
             } else if (userInfo === false) {
                 return Reactive.createElement(
-                    "span",
-                    { className: "Profile__network-message" },
+                    NetworkMessage,
+                    null,
                     "Error: profile data not found"
                 )
             } else {

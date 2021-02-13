@@ -1,9 +1,22 @@
+html {
+    /*background-color: #fbfbfb;*/
+    background-color: white;
+}
+
 body {
-    background-color: #fbfbfb;
     color: #555;
     font-family: sans-serif;
     font-size: 16px;
     margin: 0;
+}
+
+/*linear-gradient(-30deg, #ffd4d4 0%, #f0d7ff 100%);*/
+/*background: 
+        linear-gradient(45deg, rgb(255 255 255 / 0%), rgb(255 161 21 / 68%), rgb(0 0 0 / 0%)), linear-gradient(-45deg, rgb(0 0 0 / 0%), rgb(255 0 165 / 88%), rgb(0 0 0 / 0%));*/
+
+#root {
+    
+    
 }
 
 a {
